@@ -44,13 +44,7 @@ public class Philips104_wrapper implements WrapperLoader{
 		if(this.isInitialized()) {
 			Signalcharacteristics signalMetaData = philipsECG.getDataacquisition().getSignalcharacteristics();
 			
-			List<Leadmeasurement> leads = philipsECG.getInternalmeasurements().getLeadmeasurements().getLeadmeasurement();
-			if(leads != null){
-				leadNames = new ArrayList<String>();
-				for (Leadmeasurement lead : leads) {
-					leadNames.add(lead.getLeadname().toUpperCase());
-				}
-			}
+			leadNames = new ArrayList<String>();
 			
 			samplingRate = Float.valueOf(signalMetaData.getSamplingrate());
 			
@@ -81,6 +75,7 @@ public class Philips104_wrapper implements WrapperLoader{
 				for(int j=0; j<leadData[i].size(); j++) {
 					data[i][j] = leadData[i].get(j);
 				}
+				leadNames.add(leadData[i].getName().replace("Lead ", "").toUpperCase());
 			}
 			
 			return true;

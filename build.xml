@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE project>
 
-<project name="ECG_Converter4" basedir="." default="generateJarFiles">
+<project name="ECG_Converter4" basedir="." default="local-server-deploy">
 	
 	<property name="liferay" value="/opt/liferay" />
 	
@@ -57,5 +57,15 @@
 		<copy todir="${dependencies}/physionet-analysis-service-dependencies" file="build/dist/ecgFormatConverter.jar" />
 		<copy todir="${app.server.deploy.dir}/axis2/WEB-INF/lib" file="build/dist/ecgFormatConverter.jar" />
 	</target>
+	
+	<target name="local-server-deploy" description="Move the generated jar to the local server.">
+    	<delete>
+			<fileset dir="${app.server.lib.global.dir}">
+			    <include name="${ant.project.name}-*.jar"/>
+			</fileset>
+		</delete>
+
+    	<copy todir="${app.server.lib.global.dir}" file="target/${ant.project.name}-${project.version}.jar" />        
+    </target>
 	
 </project>

@@ -3,6 +3,8 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
+import org.jfree.util.Log;
+
 import edu.jhu.icm.ecgFormatConverter.hl7.HL7Reader;
 import edu.jhu.icm.ecgFormatConverter.hl7.HL7_wrapper;
 import edu.jhu.icm.ecgFormatConverter.muse.GEMuse_wrapper;
@@ -96,7 +98,7 @@ public class ECGformatConverter {
 	public  int write(fileFormat outputFormat, String outputPath, String recordName) {
 		int rowsWritten;
 		// 	write functions populate and return this.rowsWritten
-		if (verbose) System.err.println("Write format:" + outputFormat.toString());
+		if (verbose) log.info("Write format:" + outputFormat.toString());
 		switch(outputFormat) {
 			case RDT:
 				rowsWritten = writeRDT(outputPath, recordName);
@@ -127,7 +129,7 @@ public class ECGformatConverter {
 	public boolean read(fileFormat inputFormat, String fileName,
 			int signalsRequested, String inputPath, String recordName) {
 		boolean ret;
-		if (verbose) System.err.println("Load format:" + inputFormat.toString());
+		if (verbose) log.info("Load format:" + inputFormat.toString());
 		switch(inputFormat) {
 			case RDT:
 				ret = loadRDT(inputPath + fileName);
@@ -221,7 +223,7 @@ public class ECGformatConverter {
 	 */
 	public boolean loadHL7(String hl7FileName) {
 		boolean ret = false;
-		if (verbose) System.err.println("loadHL7 called for:" + hl7FileName);
+		if (verbose) log.info("loadHL7 called for:" + hl7FileName);
 		
 		try {
 			//HL7Reader hl7 =  new HL7Reader(hl7FileName);
@@ -237,7 +239,7 @@ public class ECGformatConverter {
 				numberOfPoints = hl7.getNumberOfPoints();
 				this.setLeadNames(hl7.getLeadNames());
 				ret = true;
-				if (verbose) System.err.println("HL7 file parsed successfully, found " + channels + " leads, with " + samplesPerChannel + " data points.");
+				if (verbose) log.info("HL7 file parsed successfully, found " + channels + " leads, with " + samplesPerChannel + " data points.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -517,7 +519,8 @@ public class ECGformatConverter {
 					}
 				}
 			}catch (Exception e){
-				System.err.println("Lead not found: " + lName);
+				//System.err.println("Lead not found: " + lName);
+				Log.error("Lead not found: " + lName);
 				leadNamesOK = false;
 			}
 			

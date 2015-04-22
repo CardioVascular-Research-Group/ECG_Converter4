@@ -90,9 +90,13 @@ public class ECGformatConverter {
 		
 		boolean ret = read(inputFormat, fileName, signalsRequested, inputPath, recordName);
 		
-		if(!ret) return -1;
+		if(!ret){
+			Log.error("Record reading failed: inputFormat = " + inputFormat.toString() + ", fileName = " + fileName + "signalsRequested = " + signalsRequested + "inputPath = " + inputPath + "recordName = " + recordName);
+			return -1;
+		}
 		
 		int rowsWritten = write(outputFormat, outputPath, recordName);
+		Log.info("rowsWritten = " + rowsWritten + " outputFormat = " + outputFormat.toString());
 		
 		return rowsWritten;
 	}
@@ -290,6 +294,7 @@ public class ECGformatConverter {
 			this.setLeadNames(wfdbWrap.getLeadNames());
 			return true;
 		}else { 
+			Log.error("samplesPerChannel == " + samplesPerChannel);
 			return false;
 		}
 	}
@@ -463,6 +468,7 @@ public class ECGformatConverter {
 			rowsWritten = wrap.arrayToWFDB();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Log.error(e.getMessage());
 			rowsWritten = -1;
 		}
 		
@@ -541,6 +547,7 @@ public class ECGformatConverter {
 				}else if(this.getChannelCount() == 12){
 					leadNamesOut = "I,II,III,aVR,aVL,aVF,V1,V2,V3,V4,V5,V6";
 				}
+				Log.info("Setting leadNamesOut based on ChannelCount of " + this.getChannelCount() + " to: '" + leadNamesOut + "'");
 			}else{
 				StringBuilder sb = new StringBuilder();
 				for (String l : leadNames) {

@@ -3,6 +3,7 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
 import edu.jhu.icm.ecgFormatConverter.hl7.HL7Reader;
@@ -25,6 +26,7 @@ import edu.jhu.icm.parser.Writer;
  *
  */
 public class ECGformatConverter { 
+	protected Logger log;
 	private int data[][]; // common, shared work space populated by LoadXXX, used by WriteXXX methods
 	private int aduGain = 200;
 	private int channels=0; // number of channels read by LoadXXX methods

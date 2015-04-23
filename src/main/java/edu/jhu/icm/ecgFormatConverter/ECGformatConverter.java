@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.jfree.util.Log;
 
 import edu.jhu.icm.ecgFormatConverter.hl7.HL7Reader;
 import edu.jhu.icm.ecgFormatConverter.hl7.HL7_wrapper;
@@ -91,12 +90,12 @@ public class ECGformatConverter {
 		boolean ret = read(inputFormat, fileName, signalsRequested, inputPath, recordName);
 		
 		if(!ret){
-			Log.error("Record reading failed: inputFormat = " + inputFormat.toString() + ", fileName = " + fileName + "signalsRequested = " + signalsRequested + "inputPath = " + inputPath + "recordName = " + recordName);
+			log.error("Record reading failed: inputFormat = " + inputFormat.toString() + ", fileName = " + fileName + "signalsRequested = " + signalsRequested + "inputPath = " + inputPath + "recordName = " + recordName);
 			return -1;
 		}
 		
 		int rowsWritten = write(outputFormat, outputPath, recordName);
-		Log.info("rowsWritten = " + rowsWritten + " outputFormat = " + outputFormat.toString());
+		log.info("rowsWritten = " + rowsWritten + " outputFormat = " + outputFormat.toString());
 		
 		return rowsWritten;
 	}
@@ -294,7 +293,7 @@ public class ECGformatConverter {
 			this.setLeadNames(wfdbWrap.getLeadNames());
 			return true;
 		}else { 
-			Log.error("samplesPerChannel == " + samplesPerChannel);
+			log.error("samplesPerChannel == " + samplesPerChannel);
 			return false;
 		}
 	}
@@ -468,7 +467,7 @@ public class ECGformatConverter {
 			rowsWritten = wrap.arrayToWFDB();
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.error(e.getMessage());
+			log.error(e.getMessage());
 			rowsWritten = -1;
 		}
 		
@@ -528,7 +527,7 @@ public class ECGformatConverter {
 				}
 			}catch (Exception e){
 				//System.err.println("Lead not found: " + lName);
-				Log.error("Lead not found: " + lName);
+				log.error("Lead not found: " + lName);
 				leadNamesOK = false;
 			}
 			
@@ -547,7 +546,7 @@ public class ECGformatConverter {
 				}else if(this.getChannelCount() == 12){
 					leadNamesOut = "I,II,III,aVR,aVL,aVF,V1,V2,V3,V4,V5,V6";
 				}
-				Log.info("Setting leadNamesOut based on ChannelCount of " + this.getChannelCount() + " to: '" + leadNamesOut + "'");
+				log.info("Setting leadNamesOut based on ChannelCount of " + this.getChannelCount() + " to: '" + leadNamesOut + "'");
 			}else{
 				StringBuilder sb = new StringBuilder();
 				for (String l : leadNames) {

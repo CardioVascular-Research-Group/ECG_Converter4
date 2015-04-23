@@ -26,7 +26,7 @@ import edu.jhu.icm.parser.Writer;
  *
  */
 public class ECGformatConverter { 
-	protected Logger log;
+	protected Logger log = Logger.getLogger(ECGformatConverter.class);
 	private int data[][]; // common, shared work space populated by LoadXXX, used by WriteXXX methods
 	private int aduGain = 200;
 	private int channels=0; // number of channels read by LoadXXX methods

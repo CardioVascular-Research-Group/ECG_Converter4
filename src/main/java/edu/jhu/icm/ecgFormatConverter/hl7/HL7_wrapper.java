@@ -2,12 +2,11 @@ package edu.jhu.icm.ecgFormatConverter.hl7;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.cvrgrid.hl7aecg.HL7PreprocessReturn;
 import org.cvrgrid.hl7aecg.Hl7Ecg;
-import org.cvrgrid.hl7aecg.jaxb.beans.PORTMT020001Component9;
+import org.cvrgrid.hl7aecg.Hl7EcgLeadData;
 import org.jfree.data.xy.XYDataset;
 
 import edu.jhu.icm.ecgFormatConverter.WrapperLoader;
@@ -16,7 +15,7 @@ public class HL7_wrapper implements WrapperLoader{
 	
 	private String hl7FileName;
 	private File hl7File;
-	private List<PORTMT020001Component9> components;
+	private HL7PreprocessReturn preprocessReturn;
 	
 	private int[][] data;
 	private int channels, samplingRate;
@@ -42,17 +41,17 @@ public class HL7_wrapper implements WrapperLoader{
 			throw new Exception(hl7File.getName() + " file size exceeding maximum long value.");
 		}
 		
-		HL7PreprocessReturn ret = Hl7Ecg.preprocess(hl7File);
-		components = ret.getComponents();
+		preprocessReturn = Hl7Ecg.preprocess(hl7File);
+		
 	}
 	
 	public boolean parse() {
 		
-		HL7_EcgLeadData ds = new HL7_EcgLeadData(components);
+		Hl7EcgLeadData ds = preprocessReturn.getLeadData();
 		
 		double time=0;
 		double volt=0;
-       	int leadCount = components.size()-1;
+       	int leadCount = preprocessReturn.getLeadCount();
 		int pageCount = ds.getPageCount();
 		int page=1;// 1 based dta page number currently being read
        	int sampleOffset=0;

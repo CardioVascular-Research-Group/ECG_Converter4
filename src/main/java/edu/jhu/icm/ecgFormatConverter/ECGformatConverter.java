@@ -37,7 +37,7 @@ public class ECGformatConverter {
 	private int numberOfPoints;
 	
 	static public enum fileFormat  {RDT, HL7, WFDB, WFDB_16, WFDB_61, WFDB_212, GEMUSE, RAW_XY_CONST_SAMPLE, RAW_XY_VAR_SAMPLE, PHILIPS103, PHILIPS104, SCHILLER, MUSEXML};
-	private static final boolean verbose = true;
+	private static final boolean verbose = false;
 	private String sep = File.separator;
 
 	private Object philipsRestingecgdata;
@@ -423,16 +423,19 @@ public class ECGformatConverter {
 	 * @return - rowsWritten
 	 */
 	public int writeRDT(String filePath, String recordName) {
-		
+		log.info("writeRDT(" + filePath + ", " + recordName);	
 		String fileName = recordName + ".rdt";
 		File rdtFile = new File(filePath + sep + fileName);
 		RDTParser rdtPar = new RDTParser(rdtFile);
-		rdtPar.setChannels(channels);
-		rdtPar.setSamplesPerChannel(samplesPerChannel);
-		rdtPar.setSamplingRate(samplingRate);
-		rdtPar.setData(data);	
+//		rdtPar.setChannels(channels);
+//		rdtPar.setSamplesPerChannel(samplesPerChannel);
+//		rdtPar.setSamplingRate(samplingRate);
+//		rdtPar.setData(data);	
 		
-		return rdtPar.writeRDT();
+//		return rdtPar.writeRDT();
+		
+		
+		return rdtPar.writeDummyRDT();
 	}
 	
 	/** Writes the data array out in HL7 format 

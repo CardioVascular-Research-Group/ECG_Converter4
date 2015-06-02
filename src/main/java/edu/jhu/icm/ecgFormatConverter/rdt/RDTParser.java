@@ -24,7 +24,7 @@ public class RDTParser implements WrapperWriter, WrapperLoader{
 	private static final ByteOrder BYTEORDER = ByteOrder.LITTLE_ENDIAN;
 	private static final int HEADERBYTES = 4;
 	private static final int SHORTBYTES = 2;
-	private static final boolean verbose = true;
+	private static final boolean verbose = false;
 	private int aduGain = 200;
 	private List<String> leadNames;
 
@@ -177,6 +177,29 @@ public class RDTParser implements WrapperWriter, WrapperLoader{
 					System.out.println();
 				}
 			}
+			dos.flush();
+			dos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return s;
+	}
+	
+	/** Writes a dummy RDT file to make Waveform 3 Upload portlet happy, without taking the time of writing a real RDT file which we no longer use.
+	 * 
+	 * @return
+	 */
+	public int writeDummyRDT() {
+		System.out.println("writeDummyRDT()");
+		FileOutputStream fos;
+		DataOutputStream dos;
+		int s=1;
+
+		try {
+			fos = new FileOutputStream(rdtFile);
+			dos = new DataOutputStream(fos);
+
+			dos.writeUTF("FAKE RDT file.");
 			dos.flush();
 			dos.close();
 		} catch (Exception e) {
